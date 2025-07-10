@@ -232,8 +232,9 @@ class EspIdfProvisioningModule(reactContext: ReactApplicationContext) : ReactCon
         override fun provisioningFailedFromDevice(p0: ESPConstants.ProvisionFailureReason?) {
           device.disconnectDevice()
           // device.refreshServicesOfBleDevice() //instead of disconnect just for test
-          Log.e("ESPProvisioning", "provision-provisioningFailedFromDevice"+p0.toString());
-          promise.reject(p0 as? Throwable ?: RuntimeException(p0?.message ?: "Provision failed", p0))
+          val errorMessage = p0?.name ?: "Unknown provision failure"
+          Log.e("ESPProvisioning", "provision-provisioningFailedFromDevice: $errorMessage");
+          promise.reject("PROVISION_ERROR", "Provisioning failed: $errorMessage")
         }
 
         override fun wifiConfigSent() {
